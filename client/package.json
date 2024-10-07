@@ -2,7 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:5000",
+  "proxy": "https://mern-chat-app-1-d0yd.onrender.com",
 
   "dependencies": {
     "@chakra-ui/icons": "^2.1.1",

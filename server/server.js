@@ -21,7 +21,7 @@ const {notFound,errorHandler} = require('./middlewares/errorMiddleware')
 
 
 const corsOptions = {
-  origin: '*', // This allows all origins, but you can restrict it to specific domains
+  origin: 'https://mern-chat-app-1-d0yd.onrender.com', // This allows all origins, but you can restrict it to specific domains
   credentials: true, // Allow credentials (cookies, authorization headers) to be sent
 };
 
