@@ -59,7 +59,7 @@ const GroupChatModal = ({children}) => {
             })
                 .then((res) => res.json())
                 .then((data) => {
-                    console.log(data);
+                    // console.log(data);
                     setPic(data.url.toString());
                     setLoading(false);
                 })
@@ -96,7 +96,7 @@ const GroupChatModal = ({children}) => {
                 }
             };
             const {data} = await axios.get(`/api/user?search=${query}`,config);
-            console.log(data)
+            // console.log(data)
             setLoading(false);
             setSearchResult(data);
         } catch (error) {

@@ -48,7 +48,7 @@ const SingleChat = ({fetchAgain,setFetchAgain}) => {
 
             const {data}=await axios.get(`/api/message/${selectedChat._id}`,config)
 
-            console.log(data)
+            // console.log(data)
 
             setMessages(data)
             setLoading(false)

@@ -15,13 +15,13 @@ const ChatProvider = ({children})=>{
 
     useEffect(()=>{
         const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-        console.log(`userINFO-${userInfo}`)
+        // console.log(`userINFO-${userInfo}`)
         
 if (userInfo && userInfo.token) {
-  console.log(`Token: ${userInfo.token}`);  // Make sure this prints the actual token
+  // console.log(`Token: ${userInfo.token}`);  // Make sure this prints the actual token
   setUser(userInfo);
 } else {
-  console.log("No token found");
+  // console.log("No token found");
    navigate('/');
 }
 

@@ -9,12 +9,25 @@ const userRoutes  =require('./routes/userRoutes')
 const chatRoutes=require('./routes/chatRoutes');
 const messageRoutes=require('./routes/messageRoutes');
 const path =require( 'path')
+const cors = require('cors')
 
 // to connect db to monog
 const connectdb =require('./config/db')
 const Message = require('./models/messageModel')
 
 const {notFound,errorHandler} = require('./middlewares/errorMiddleware')
+
+
+
+
+const corsOptions = {
+  origin: '*', // This allows all origins, but you can restrict it to specific domains
+  credentials: true, // Allow credentials (cookies, authorization headers) to be sent
+};
+
+// Apply CORS globally with options
+app.use(cors(corsOptions)); 
+
 
 app.use(express.json()) //to accept json data
 
@@ -40,20 +53,29 @@ app.use('/api/message',messageRoutes)
 
 // deployment //
 
-const __dirname1 = path.resolve()
-if(process.env.NODE_ENV==='production')
-{
-        app.use(express.static(path.join(__dirname1,"client/build")))
+// const __dirname1 = path.resolve()
+// if(process.env.NODE_ENV==='production')
+// {
+//         app.use(express.static(path.join(__dirname1,"client/build")))
 
-        app.get("*",(req,res)=>{
-            res.sendFile(path.resolve(__dirname1,"client","build","index.html"))
-        })
-}
-else{
-    app.get('/',(req,res)=>{
-        res.send("Api is running successfully")
-    })
-}
+//         app.get("*",(req,res)=>{
+//             res.sendFile(path.resolve(__dirname1,"client","build","index.html"))
+//         })
+// }
+// else{
+//     app.get('/',(req,res)=>{
+//         res.send("Api is running successfully")
+//     })
+// }
+
+const __dirname1 = path.resolve();
+
+app.use(express.static(path.join(__dirname1,"/client/build")))
+
+app.get('*',(req,res)=>{
+    res.sendFile(path.resolve(__dirname1,"client","build","index.html"))
+})
+
 
 // deployement //
 
@@ -74,7 +96,8 @@ console.log(`server is running on port ${port}`.yellow.bold)//.yellow.bold is ju
 const io=require('socket.io')(server,{
     pingTimeout:60000,
     cors:{
-        origin:"*"
+        origin:"*",
+        credentials:true
     }
 })
 
@@ -90,7 +113,7 @@ io.on("connection",(socket)=>{
 
     socket.on('join chat',(room)=>{
         socket.join(room)
-        console.log("User joined Room:"+room)
+        // console.log("User joined Room:"+room)
     })
 
     socket.on('typing',(room)=>socket.in(room).emit("typing"))
@@ -102,7 +125,8 @@ io.on("connection",(socket)=>{
         var chat=newMessageRecieved.chat
         if(!chat.users)
         {
-            return console.log("chat.users not defined")
+            // console.log("chat.users not defined")
+             return;
         }
        
             
@@ -120,7 +144,7 @@ io.on("connection",(socket)=>{
     });
 
     socket.off("setup",()=>{
-        console.log("user disconnected")
+        // console.log("user disconnected")
         socket.leave(userData._id)
     });
 });

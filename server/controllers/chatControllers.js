@@ -7,7 +7,7 @@ const accessChat=asyncHandler(async(req,res)=>{
 
     if(!userId)
     {
-        console.log("UserId param not sent with the request");
+        // console.log("UserId param not sent with the request");
         return res.sendStatus(400);
     }
 
@@ -52,7 +52,7 @@ const accessChat=asyncHandler(async(req,res)=>{
 
 const fetchChats=asyncHandler(async(req,res)=>{
     try {
-        console.log("in")
+       
         Chat.find({users:{$elemMatch:{$eq:req.user._id}}})
         .populate("users","-password")
         .populate("groupAdmin","-password")
@@ -74,7 +74,7 @@ const fetchChats=asyncHandler(async(req,res)=>{
 
 // create groupchat
 const createGroupChat=asyncHandler(async(req,res)=>{
-    console.log(req.user)
+    // console.log(req.user)
     if(!req.body.users || !req.body.name)
     {
 return res.status(400).send({message:"Please fill all the fields"});

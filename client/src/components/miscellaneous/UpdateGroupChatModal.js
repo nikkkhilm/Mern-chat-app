@@ -66,7 +66,7 @@ const UpdateGroupChatModal = ({fetchAgain,setFetchAgain,fetchMessages}) => {
     }
 
     const handleAddUser=async(user1)=>{
-        console.log("groupAdmin ID:", selectedChat.groupAdmin._id, "logged-in user ID:", user1._id);
+        // console.log("groupAdmin ID:", selectedChat.groupAdmin._id, "logged-in user ID:", user1._id);
         if(selectedChat.users.find((u)=>u._id===user1._id)){
             toast({
                 title:"User already in group!",
@@ -167,7 +167,7 @@ const UpdateGroupChatModal = ({fetchAgain,setFetchAgain,fetchMessages}) => {
                 }
             };
             const {data} = await axios.get(`/api/user?search=${query}`,config);
-            console.log(data)
+            // console.log(data)
             setLoading(false);
             setSearchResult(data);
         } catch (error) {

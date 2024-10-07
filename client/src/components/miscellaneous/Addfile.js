@@ -10,13 +10,13 @@ const Addfile = ({setFile}) => {
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
      setFile(file)
-    console.log("File selected:", file); // Handle file upload logic
+    // console.log("File selected:", file); // Handle file upload logic
   };
 
   const handleImageUpload = (event) => {
     const image = event.target.files[0];
     setFile(image)
-    console.log("Image selected:", image); // Handle image upload logic
+    // console.log("Image selected:", image); // Handle image upload logic
   };
 
   return (

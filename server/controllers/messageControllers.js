@@ -17,7 +17,7 @@ const allMessages=asyncHandler(async(req,res)=>{
 
 const sendMessage=asyncHandler(async(req,res)=>{
     const {content,chatId,file}=req.body
-    console.log("1")
+   
 
     if(!content && !file || !chatId)
     {
@@ -30,18 +30,18 @@ const sendMessage=asyncHandler(async(req,res)=>{
         chat:chatId,
         file
     }
-    console.log("2")
+    
     try {
         let message=await Message.create(newMessage);
 
         message = await message.populate("sender","name pic")
-        console.log("3")
+       
         message = await message.populate("chat");
         message=await User.populate(message,{
             path:"chat.users",
             select:"name pic email",
         });
-        console.log("1")
+       
 
         await Chat.findByIdAndUpdate(req.body.chatId,{
             latestMessage:message
