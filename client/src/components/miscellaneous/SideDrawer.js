@@ -1,15 +1,31 @@
-import { Avatar, Box, Button, Input, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Spinner, Text, Tooltip, useDisclosure, useToast, Badge } from '@chakra-ui/react';
+import {
+  Avatar,
+  Box,
+  Button,
+  Input,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuItem,
+  MenuList,
+  Text,
+  Tooltip,
+  useDisclosure,
+  useToast,
+  Badge,
+  Spinner,
+} from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { BellIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import { ChatState } from '../../Context/ChatProvider';
 import ProfileModal from './ProfileModal';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
 import { Drawer, DrawerBody, DrawerHeader, DrawerOverlay, DrawerContent } from '@chakra-ui/react';
 import ChatLoading from './ChatLoading';
 import UserListItem from '../UserAvatar/UserListItem';
 import { getSender } from '../../config/ChatLogics';
+import UpdateProfileModal from './UpdateProfileModal';
 
 const SideDrawer = () => {
   const [search, setSearch] = useState('');
@@ -20,6 +36,9 @@ const SideDrawer = () => {
   const { user, setSelectedChat, setChats, chats, setUser, notification, setNotification } = ChatState();
   const navigate = useNavigate();
   const toast = useToast();
+
+  // Manage opening and closing for the UpdateProfileModal
+  const { isOpen: isUpdateProfileOpen, onOpen: onUpdateProfileOpen, onClose: onUpdateProfileClose } = useDisclosure();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -126,26 +145,21 @@ const SideDrawer = () => {
         <div>
           <Menu>
             <MenuButton p="1">
-              {/* Notification badge using Chakra UI's Badge */}
-             
-              <BellIcon fontSize="2xl" m="1">
-                 <Badge colorScheme="red" borderRadius="full" px="2" mr="2">
+              <BellIcon fontSize="2xl" m="1" />
+              <Badge colorScheme="red" borderRadius="full" px="2" mr="2">
                 {notification.length}
               </Badge>
-                </BellIcon>
             </MenuButton>
             <MenuList pl={2}>
               {!notification.length && "No New Messages"}
-              {notification.filter((notif, index, self) =>
-                self.findIndex(n => n.chat._id === notif.chat._id) === index)
-                .map((notif) => (
-                  <MenuItem key={notif._id} onClick={() => {
-                    setSelectedChat(notif.chat);
-                    setNotification(notification.filter((n) => n.chat._id !== notif.chat._id));
-                  }}>
-                    {notif.chat.isGroupChat ? `New Message in ${notif.chat.chatName}` : `New Message from ${getSender(user, notif.chat.users)}`}
-                  </MenuItem>
-                ))}
+              {notification.map((notif) => (
+                <MenuItem key={notif._id} onClick={() => {
+                  setSelectedChat(notif.chat);
+                  setNotification(notification.filter((n) => n._id !== notif._id));
+                }}>
+                  {notif.chat.isGroupChat ? `New Message in ${notif.chat.chatName}` : `New Message from ${getSender(user, notif.chat.users)}`}
+                </MenuItem>
+              ))}
             </MenuList>
           </Menu>
 
@@ -158,7 +172,10 @@ const SideDrawer = () => {
                 <MenuItem>My Profile</MenuItem>
               </ProfileModal>
               <MenuDivider />
-              <MenuItem onClick={logouthandler}> Logout</MenuItem>
+              {/* Update profile option opens the UpdateProfileModal */}
+              <MenuItem onClick={onUpdateProfileOpen}>Update Profile</MenuItem>
+              <MenuDivider />
+              <MenuItem onClick={logouthandler}>Logout</MenuItem>
             </MenuList>
           </Menu>
         </div>
@@ -191,6 +208,9 @@ const SideDrawer = () => {
           </DrawerBody>
         </DrawerContent>
       </Drawer>
+
+      {/* UpdateProfileModal to edit profile */}
+      <UpdateProfileModal user={user} isOpen={isUpdateProfileOpen} onClose={onUpdateProfileClose} />
     </>
   );
 };
