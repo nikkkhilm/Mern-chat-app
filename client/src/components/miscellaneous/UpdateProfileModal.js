@@ -54,8 +54,8 @@ const UpdateProfileModal = ({ user, isOpen, onClose }) => {
     if (newPicFile) {
       const data = new FormData();
       data.append('file', newPicFile);
-      data.append('upload_preset', 'chat_app');
-      data.append('cloud_name', 'your_cloud_name');
+      data.append('upload_preset', 'chat app');
+      data.append("cloud_name", "dcpnsvjkp");
 
       try {
         const res = await fetch('https://api.cloudinary.com/v1_1/dcpnsvjkp/auto/upload', {
@@ -63,7 +63,8 @@ const UpdateProfileModal = ({ user, isOpen, onClose }) => {
           body: data,
         });
         const result = await res.json();
-        uploadedPic = result.url.toString();
+        setPic(result.url.toString());
+        uploadedPic = pic;
       } catch (err) {
         console.error(err);
         toast({
@@ -102,8 +103,18 @@ const UpdateProfileModal = ({ user, isOpen, onClose }) => {
         position: 'bottom',
       });
 
+         const existingUserInfo = JSON.parse(localStorage.getItem('userInfo'));
+
+    // Merge the updated fields with existing user info
+    const newUserInfo = { ...existingUserInfo, ...data };
+
+    // Save updated userInfo back to localStorage
+    localStorage.setItem('userInfo', JSON.stringify(newUserInfo));
+
+
+
       // Update local storage and UI with new user data
-      localStorage.setItem('userInfo', JSON.stringify(data));
+      // localStorage.setItem('userInfo', JSON.stringify(data));
       setLoading(false);
       onClose(); // Close modal after successful update
 
